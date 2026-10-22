@@ -1,6 +1,6 @@
 #!/bin/sh
-# Installs the sailops-sandbox CLI: curl -fsSL https://sailops.io/install-sandbox.sh | sh
-# Fallback: curl -fsSL https://raw.githubusercontent.com/herewecloud/sailops-sandbox/main/install.sh | sh
+# Installs the CLI: curl -fsSL https://raw.githubusercontent.com/herewecloud/sailops-sandbox/main/install.sh | sh
+# Optional branded mirror: https://sailops.io/install-sandbox.sh
 #
 # Downloads the release archive for this machine from the releases of the
 # public repository herewecloud/sailops-sandbox (or SAILOPS_SANDBOX_RELEASE_URL)
