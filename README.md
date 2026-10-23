@@ -24,3 +24,5 @@ Network access:
 sailops-sandbox network show my-project
 sailops-sandbox network set my-project --private-access connected-services --internet false
 ```
+
+SSH wake (CLI 0.1.3 and later): after the initial `up` registers your SSH key, `ssh sailops-my-project` starts a stopped sandbox and waits for it automatically. No separate start command is needed for SSH, scp or rsync. Update existing entries with `sailops-sandbox ssh-config --all`. Generated hosts allow cold starts; IDEs overriding SSH connection timeouts may need `remote.SSH.connectTimeout` set to `660`.
