@@ -27,7 +27,17 @@ sailops-sandbox network set my-project --private-access connected-services --int
 
 SSH wake (CLI 0.1.3 and later): after the initial `up` registers your SSH key, `ssh sailops-my-project` starts a stopped sandbox and waits for it automatically. No separate start command is needed for SSH, scp or rsync. Update existing entries with `sailops-sandbox ssh-config --all`. Generated hosts allow cold starts; IDEs overriding SSH connection timeouts may need `remote.SSH.connectTimeout` set to `660`.
 
-Graphical applications (CLI 0.2.0 and a current managed sandbox image):
+Graphical applications and selected software (CLI 0.2.1 and a current SailOps environment):
+
+Graphics is optional and disabled by default for new sandboxes. Choose software in the creation form or Connect, or use:
+
+```sh
+sailops-sandbox software show my-project
+sailops-sandbox software set my-project --graphics true --tools codex,opencode
+# Use --tools none for the base development environment only.
+```
+
+Saving software changes restarts a running sandbox and closes its sessions; stopped sandboxes stay stopped and workspace files remain. Chromium with Xpra used about 700–800 MiB RAM in staging and shares the sandbox CPU and memory with coding tools. Enabling graphics does not launch an application or change your compute class. Initial downloads can take several minutes. Selected coding tools are installed offline before startup.
 
 ```sh
 # Browser viewer; no local Xpra installation required.
