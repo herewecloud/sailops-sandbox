@@ -47,6 +47,22 @@ trap 'rm -rf "$tmp"' EXIT
 
 echo "downloading $url"
 curl -fsSL "$url" -o "$tmp/sailops-sandbox.tar.gz"
+curl -fsSL "${url%/*}/checksums.txt" -o "$tmp/checksums.txt"
+archive="sailops-sandbox_${os}_${arch}.tar.gz"
+expected="$(awk -v archive="$archive" '$2 == archive { print $1 }' "$tmp/checksums.txt")"
+case "$expected" in
+    ''|*[!0-9a-f]*) echo "sailops-sandbox: invalid release checksum" >&2; exit 1 ;;
+esac
+[ "${#expected}" -eq 64 ] || { echo "sailops-sandbox: invalid release checksum" >&2; exit 1; }
+if command -v sha256sum >/dev/null 2>&1; then
+    actual="$(sha256sum "$tmp/sailops-sandbox.tar.gz" | awk '{ print $1 }')"
+elif command -v shasum >/dev/null 2>&1; then
+    actual="$(shasum -a 256 "$tmp/sailops-sandbox.tar.gz" | awk '{ print $1 }')"
+else
+    echo "sailops-sandbox: sha256sum or shasum is required" >&2
+    exit 1
+fi
+[ "$actual" = "$expected" ] || { echo "sailops-sandbox: release checksum mismatch; nothing installed" >&2; exit 1; }
 tar -C "$tmp" -xzf "$tmp/sailops-sandbox.tar.gz"
 install -m 0755 "$tmp/sailops-sandbox" "$target_dir/sailops-sandbox"
 
